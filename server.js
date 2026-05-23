@@ -28,7 +28,7 @@ const app = express();
 
 // ── MIDDLEWARE ──────────────────────────────────
 app.use(express.json());
-app.use(cors({ origin: '*' }));
+app.use(cors({ origin: 'threadly-frontend-zeta.vercel.app' }));
 
 // Rate limit OTP routes (max 5 requests per 15 min per IP)
 const otpLimiter = rateLimit({ windowMs: 15 * 60 * 1000, max: 5 });
