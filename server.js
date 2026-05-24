@@ -25,13 +25,18 @@ const User       = require('./models/User');
 const OTP        = require('./models/OTP');
 
 const app = express();
+app.set('trust proxy', 1);
 
 // ── MIDDLEWARE ──────────────────────────────────
 app.use(express.json());
 app.use(cors({ origin: '*' }));
 
 // Rate limit OTP routes (max 50 requests per 15 min per IP)
-const otpLimiter = rateLimit({ windowMs: 15 * 60 * 1000, max: 50 });
+const otpLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 50,
+  trustProxy: true
+});
 
 // ── MONGODB ─────────────────────────────────────
 mongoose.connect(process.env.MONGODB_URI)
@@ -41,8 +46,8 @@ mongoose.connect(process.env.MONGODB_URI)
 // ── EMAIL TRANSPORTER ───────────────────────────
 const transporter = nodemailer.createTransport({
   host:   process.env.SMTP_HOST,
-  port:   Number(process.env.SMTP_PORT),
-  secure: false,
+  port:   465,
+  secure: true,
   auth: {
     user: process.env.SMTP_USER,
     pass: process.env.SMTP_PASS
