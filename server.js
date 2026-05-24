@@ -55,8 +55,8 @@ mongoose.connect(process.env.MONGODB_URI)
 // ── EMAIL TRANSPORTER ───────────────────────────
 const transporter = nodemailer.createTransport({
   host:   process.env.SMTP_HOST,
-  port:   465,
-  secure: true,
+  port:   Number(process.env.SMTP_PORT),
+  secure: false,
   auth: {
     user: process.env.SMTP_USER,
     pass: process.env.SMTP_PASS
@@ -109,7 +109,6 @@ function authMiddleware(req, res, next) {
   }
 }
 
-//  ROUTES
 
 // POST /api/auth/register
 app.post('/api/auth/register', otpLimiter, async (req, res) => {
