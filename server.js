@@ -30,8 +30,8 @@ const app = express();
 app.use(express.json());
 app.use(cors({ origin: '*' }));
 
-// Rate limit OTP routes (max 5 requests per 15 min per IP)
-const otpLimiter = rateLimit({ windowMs: 15 * 60 * 1000, max: 5 });
+// Rate limit OTP routes (max 50 requests per 15 min per IP)
+const otpLimiter = rateLimit({ windowMs: 15 * 60 * 1000, max: 50 });
 
 // ── MONGODB ─────────────────────────────────────
 mongoose.connect(process.env.MONGODB_URI)
