@@ -2,7 +2,7 @@ require('dotenv').config();
 const admin = require('firebase-admin');
 admin.initializeApp({
   credential: admin.credential.cert({
-    "type": "service_account",
+  "type": "service_account",
   "project_id": "threadly-9fcb1",
   "private_key_id": "24a1053d0627bbf416aeaa9d6a0122535d5ffdea",
   "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDc3oEoSDct2jvd\nTO0nHLANlbAXCiSeNaBIxFHg5Qpc7oIlvlP4ND7IsL/k93TjtZE2I0CQo8MagaMt\nP6nR8yP3d5hzLd9Y4pz46DydIcMimHwdJcgncNYnwyLP4ZYc0dCREeuWgs+K96sp\nP/QpwfyyCD/laFzF7Ld9EieIqk9jLk1i+ucHixJAQIOWPRCjO6mErWwFuWcZL3QD\nap/lj3BboU7G/lvDAnTVcmgz1iU5EOJ6fmEEvTfKnxuSFJfb8dxdfCIX5rUZKotw\n6FcAJ8Z7D449aiSdyJR1oIQeCLmLYMF+8jtSTVEKGfjZHw4WSKiCaEvgnsHr/o1m\nvBFYRJEjAgMBAAECggEASWE9PPJdLsUyHXCY2+U6kpDYS5dJmiyL35El+NdvrXdq\nUvrcb/p/n3Klln8mXR7uKzPkGAnoYK6QVZCwrXmfyfB4fE/Rw/iqGUIjHTth1uUd\nWxu512y0IcrBjppOoq2Mox32jO9R38QwIAjI6HS0LTvzapbVN8bRIWL+MngO3w6d\nkAfxtObKrAM8bnsvWNGxC8w748zECHPrx9uszYdvOu2gxpMBQQ5WO3Z0QLcUaBfU\n/O34dXwqosdbGea10U0pgpCy0kiTX+ik2iUZe9E688++QiNxm3uGjb8gD1ngtO8p\nitY8+V3E+LNQLppi1bBD4NaXgAwyrN/G9dCns6xdnQKBgQDw7aw42fV+QargruyZ\nrMACRIJ6YRsjkJ2CZ5HKfCGNetKPc28WyVlMoLmzQZ8m16WMSV3TZTRQhPhnbvAq\n20X07zCKU9Q0ES994E6002vsV4EdsnClq5hO41OxEMNcut1MV9xONx3pInZFYDvY\ndNsSE2U2vrhh08Z+M0vrwxoQ7wKBgQDqr5g54CTk6srASGTWIJR5jLqNeDDl+Kdu\n/4/oCf9XCwGyGlI+nqDAxD93va9GxNZPf7VTsed9iE3WMIlEO9FA7/WeO5HnzYpN\nXnGOjXcjfKzfc7FKbTLsMb8CQJM8sgoypZqWWNaTHRpaNH5ue4/poLwHTddFNd8p\n3ZuMkV+bDQKBgQDW7xFvfnKV+jtZSnRk/EonO7szNiIh7ke2KHNVsru0HdhuhUqb\nh3EU/WXtVyOGYWec6W68wlKTaqy4ia3Ubd3RDvm8zeBHuvUlVNCiXOKw67eSKLh5\n88Viy0bEdfHzbfkyvEcbt+wFKetdJOb+yfEOBSOMXUTccTNpLpYSc/FzHQKBgQCD\noCqbw0hOEBXZVIEhy7IankB/Wfrq8NRPoAyBUyIgGq8/yh14u5VjqG4EZaHp6jpc\n6j60C2LPeGRXjm9eksIhTrSOo9CIlzJLhH3iOxuoDqQSy5uTJ73Y1WnRBJDQCPdJ\nQrJ6QqdOaZM/JpQGuUyU9y6eVh031ygsHfvBEkPx/QKBgG+Za30lVAu/yLXF/sMH\nQhuvW4ZrdAEZb7YXSL1l4ilgozHopUFKhERetPhlip2W3z7I1VLKjYCHy23veJK/\nkl9NLhHinJBXLQPVRD+3ki07TNOVB3n1Dcp2nF3wTGAcBkBACasFuS9Kcf0ZyskM\n7GqFialokLVvihcJFcNcM0a0\n-----END PRIVATE KEY-----\n",
@@ -29,7 +29,16 @@ app.set('trust proxy', 1);
 
 // ── MIDDLEWARE ──────────────────────────────────
 app.use(express.json());
-app.use(cors({ origin: '*' }));
+app.use(cors({
+  origin: [
+    'https://threadly-frontend-zeta.vercel.app',
+    'http://localhost:5500',
+    'http://127.0.0.1:5500'
+  ],
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true
+}));
 
 // Rate limit OTP routes (max 50 requests per 15 min per IP)
 const otpLimiter = rateLimit({
